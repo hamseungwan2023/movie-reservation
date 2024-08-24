@@ -1,2 +1,5 @@
-package com.movie.reservation.domain.cinema.entity;public enum SeatStatus {
+package com.movie.reservation.domain.cinema.entity;
+
+public enum SeatStatus {
+    AVAILABLE,BOOKED
 }

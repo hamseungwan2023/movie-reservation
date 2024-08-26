@@ -10,6 +10,7 @@ import com.movie.reservation.domain.user.entity.User;
 import com.movie.reservation.domain.user.entity.UserRoleEnum;
 import com.movie.reservation.domain.user.repository.UserRepository;
 import com.movie.reservation.global.exception.BadRequestException;
+import com.movie.reservation.global.exception.NotFoundException;
 import com.movie.reservation.global.jwt.JwtProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,10 +29,9 @@ public class UserService {
         this.jwtProvider = jwtProvider;
     }
 
-    @Transactional
     public void signup(SignupRequestDto requestDto) {
 
-        if(userRepository.findByEmail(requestDto.getEmail()).isPresent())    {
+        if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new BadRequestException("이미 등록된 사용자 입니다.");
         }
 
@@ -51,9 +51,9 @@ public class UserService {
     public LoginResponseDto login(LoginRequestDto requestDto) {
 
         final User user = userRepository.findByEmail(requestDto.getEmail())
-                .orElseThrow(()->new BadRequestException("존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자 입니다."));
 
-        final String accessToken = jwtProvider.createAccessToken(user.getUsername(),user.getRole());
+        final String accessToken = jwtProvider.createAccessToken(user.getUsername(), user.getRole());
         final String refreshToken = jwtProvider.createRefreshToken(user.getUsername());
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
@@ -69,7 +69,7 @@ public class UserService {
 
     public void updateUser(Long id, UpdateUserRequestDto requestDto) {
         final User existingUser = userRepository.findById(id)
-                .orElseThrow(()->new BadRequestException("존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자 입니다."));
 
         final String encodedPassword = (requestDto.getPassword() != null && !requestDto.getPassword().isEmpty())
                 ? passwordEncoder.encode(requestDto.getPassword())
@@ -89,7 +89,7 @@ public class UserService {
     public void logout(String username) {
 
         final User user = userRepository.findByUsername(username)
-                .orElseThrow(()->new BadRequestException("존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자 입니다."));
 
         user.logout();
     }
@@ -98,14 +98,14 @@ public class UserService {
     public void withdraw(String username) {
 
         final User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new BadRequestException("해당 유저는 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 유저는 존재하지 않습니다."));
 
         user.withdraw();
     }
 
     public UserResponseDto getUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new BadRequestException("해당 유저는 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 유저는 존재하지 않습니다."));
 
         return UserResponseDto.builder()
                 .email(user.getEmail())

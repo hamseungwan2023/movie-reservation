@@ -1,6 +1,5 @@
 package com.movie.reservation.domain.user.controller;
 
-import com.amazonaws.Response;
 import com.movie.reservation.domain.user.dto.request.LoginRequestDto;
 import com.movie.reservation.domain.user.dto.request.SignupRequestDto;
 import com.movie.reservation.domain.user.dto.request.UpdateUserRequestDto;
@@ -27,21 +26,21 @@ public class UserController {
     }
 
     @PostMapping("/users/signup")
-    public ResponseEntity<MessageResponse> signup(@Valid @RequestBody SignupRequestDto requestDto){
+    public ResponseEntity<MessageResponse> signup(@Valid @RequestBody SignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        return ResponseEntity.ok(new MessageResponse(200,"회원가입 성공"));
+        return ResponseEntity.ok(new MessageResponse(200, "회원가입 성공"));
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<DataResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto requestDto){
+    public ResponseEntity<DataResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto requestDto) {
         return ResponseEntity.ok
-                (new DataResponse<>(200,"로그인 성공",userService.login(requestDto)));
+                (new DataResponse<>(200, "로그인 성공", userService.login(requestDto)));
     }
 
     @PostMapping("/user/logout")
-    public ResponseEntity<MessageResponse> logout(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<MessageResponse> logout(@AuthenticationPrincipal UserDetails userDetails) {
 
         userService.logout(userDetails.getUsername());
 
@@ -49,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/withdraw")
-    public ResponseEntity<MessageResponse> withdraw(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<MessageResponse> withdraw(@AuthenticationPrincipal UserDetails userDetails) {
 
         userService.withdraw(userDetails.getUsername());
 
@@ -57,17 +56,17 @@ public class UserController {
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<MessageResponse> updateUser(@PathVariable Long id,
-                                                      @Valid @RequestBody UpdateUserRequestDto requestDto){
-        userService.updateUser(id,requestDto);
+    public ResponseEntity<MessageResponse> updateUser(@PathVariable("id") Long userId,
+                                                      @Valid @RequestBody UpdateUserRequestDto requestDto) {
+        userService.updateUser(userId, requestDto);
 
         return ResponseEntity.ok(new MessageResponse(200, "프로필 수정 성공"));
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<DataResponse<UserResponseDto>> getUser(@PathVariable Long id){
+    public ResponseEntity<DataResponse<UserResponseDto>> getUser(@PathVariable("id") Long userId) {
         return ResponseEntity.ok
-                (new DataResponse<>(200,"프로필 조회 성공", userService.getUser(id)));
+                (new DataResponse<>(200, "프로필 조회 성공", userService.getUser(userId)));
     }
 }
 

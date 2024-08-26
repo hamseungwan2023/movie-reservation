@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,38 +15,43 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
-@Slf4j(topic = "Global Exception")
+@Slf4j(topic = "JwtProvider")
 @Component
 public class JwtProvider {
 
-    private final String secretKey;
+    @Value("${jwt.secret.key}")
+    private String secretKey;
 
     @Value("${jwt.access.token.expiration}")
-    long tokenExpiration;
+    private long tokenExpiration;
 
     @Value("${jwt.refresh.token.expiration}")
-    long refreshTokenExpiration;
+    private long refreshTokenExpiration;
 
+    // 기본 생성자 필요
+    public JwtProvider() {
+        this.secretKey = null; // 기본값
+    }
 
-    public JwtProvider(@Value("${jwt.secret.key}") String secretKey) {
-        this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    @PostConstruct
+    private void init() {
+        this.secretKey = Base64.getEncoder().encodeToString(this.secretKey.getBytes());
     }
 
     // 액세스 토큰 생성
     public String createAccessToken(String username, UserRoleEnum role) {
-
-        return generateToken(username,role,tokenExpiration);
+        return generateToken(username, role, tokenExpiration);
     }
 
     // 리프레시 토큰 생성
     public String createRefreshToken(String username) {
-        return generateRefreshToken(username,refreshTokenExpiration);
+        return generateRefreshToken(username, refreshTokenExpiration);
     }
 
     public String generateToken(String username, UserRoleEnum role, long expiration) {
         return Jwts.builder()
                 .setSubject(username) // 토큰 주체
-                .claim("role",role.getAuthority())
+                .claim("role", role.getAuthority())
                 .setIssuedAt(new Date()) // 토큰 발행 시간
                 .setExpiration(new Date(System.currentTimeMillis() + expiration)) // 토큰 만료시간
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -63,7 +69,6 @@ public class JwtProvider {
                 .compact();
     }
 
-
     public Claims extractClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey)
@@ -77,7 +82,6 @@ public class JwtProvider {
                 .parseClaimsJws(token);
         return claims.getBody().get("role", String.class);
     }
-
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);

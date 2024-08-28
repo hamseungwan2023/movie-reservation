@@ -78,4 +78,16 @@ public class User extends Timestamped implements UserDetails {
     public void logout() {
         this.refreshToken = "";
     }
+
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    public void updatePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
+    public void updatePhone(String phone) {
+        this.phone = phone;
+    }
 }

@@ -68,21 +68,24 @@ public class UserService {
     }
 
     public void updateUser(Long id, UpdateUserRequestDto requestDto) {
+
         final User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자 입니다."));
 
-        final String encodedPassword = (requestDto.getPassword() != null && !requestDto.getPassword().isEmpty())
-                ? passwordEncoder.encode(requestDto.getPassword())
-                : existingUser.getPassword();
+        if (requestDto.getUsername() != null) {
+            existingUser.updateUsername(requestDto.getUsername());
+        }
 
-        final User updatedUser = User.builder()
-                .id(existingUser.getId())
-                .username(requestDto.getUsername() != null ? requestDto.getUsername() : existingUser.getUsername())
-                .password(encodedPassword)
-                .phone(requestDto.getPhone() != null ? requestDto.getPhone() : existingUser.getPhone())
-                .build();
+        if (requestDto.getPassword() != null && !requestDto.getPassword().isEmpty()) {
+            final String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+            existingUser.updatePassword(encodedPassword);
+        }
 
-        userRepository.save(updatedUser);
+        if (requestDto.getPhone() != null) {
+            existingUser.updatePhone(requestDto.getPhone());
+        }
+
+        userRepository.save(existingUser); // 기존 객체를 업데이트하여 저장
     }
 
     @Transactional
@@ -104,7 +107,8 @@ public class UserService {
     }
 
     public UserResponseDto getUser(Long id) {
-        User user = userRepository.findById(id)
+
+        final User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 유저는 존재하지 않습니다."));
 
         return UserResponseDto.builder()

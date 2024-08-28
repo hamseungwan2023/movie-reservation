@@ -28,10 +28,10 @@ public class ScreenTime extends Timestamped {
     private Timestamp endTime;
 
     @JoinColumn(nullable = false, name = "screen_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Screen screen;
 
     @JoinColumn(nullable = false, name = "movie_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Movie movie;
 }

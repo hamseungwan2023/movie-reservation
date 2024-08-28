@@ -33,9 +33,26 @@ public class Movie extends Timestamped {
     private String poster;
 
     @Column(nullable = false)
-    private Date expired;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Genre genre;
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
+    public void updateGenre(String genre) {
+        this.genre = Genre.valueOf(genre);
+    }
+
+    public void updatePoster(String poster) {
+        this.poster = poster;
+    }
+
+    public void updateDuration(Integer duration) {
+        this.duration = duration;
+    }
 }

@@ -58,6 +58,7 @@ public class UserController {
     @PatchMapping("/users/{id}")
     public ResponseEntity<MessageResponse> updateUser(@PathVariable("id") Long userId,
                                                       @Valid @RequestBody UpdateUserRequestDto requestDto) {
+
         userService.updateUser(userId, requestDto);
 
         return ResponseEntity.ok(new MessageResponse(200, "프로필 수정 성공"));

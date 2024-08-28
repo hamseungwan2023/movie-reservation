@@ -19,7 +19,7 @@ public class Seat extends Timestamped {
     private Long id;
 
     @JoinColumn(nullable = false, name = "screen_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Screen screen;
 
     @Column(nullable = false)

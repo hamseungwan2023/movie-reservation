@@ -107,7 +107,8 @@ public class UserService {
     }
 
     public UserResponseDto getUser(Long id) {
-        User user = userRepository.findById(id)
+
+        final User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 유저는 존재하지 않습니다."));
 
         return UserResponseDto.builder()

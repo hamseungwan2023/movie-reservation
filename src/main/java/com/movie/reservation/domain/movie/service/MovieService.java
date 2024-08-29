@@ -1,6 +1,7 @@
 package com.movie.reservation.domain.movie.service;
 
 import com.movie.reservation.domain.movie.dto.request.MovieRequestDto;
+import com.movie.reservation.domain.movie.dto.request.UpdateMovieRequestDto;
 import com.movie.reservation.domain.movie.dto.response.MovieResponseDto;
 import com.movie.reservation.domain.movie.entity.Genre;
 import com.movie.reservation.domain.movie.entity.Movie;
@@ -60,7 +61,7 @@ public class MovieService {
         return movieRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-    public void updateMovie(Long id, MovieRequestDto requestDto) {
+    public void updateMovie(Long id, UpdateMovieRequestDto requestDto) {
 
         final Movie existingMovie = movieRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 영화는 존재하지 않습니다."));
@@ -86,10 +87,10 @@ public class MovieService {
 
     public void uploadPoster(Long id, MultipartFile file) throws IOException {
 
-        Movie movie = movieRepository.findById(id)
+        final Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 영화는 존재하지 않습니다."));
 
-        String poster = s3Service.s3Upload(file);
+        final String poster = s3Service.s3Upload(file);
 
         movie.updatePoster(poster);
         movieRepository.save(movie);

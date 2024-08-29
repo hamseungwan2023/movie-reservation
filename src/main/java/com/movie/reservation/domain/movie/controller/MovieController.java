@@ -1,6 +1,7 @@
 package com.movie.reservation.domain.movie.controller;
 
 import com.movie.reservation.domain.movie.dto.request.MovieRequestDto;
+import com.movie.reservation.domain.movie.dto.request.UpdateMovieRequestDto;
 import com.movie.reservation.domain.movie.dto.response.MovieResponseDto;
 import com.movie.reservation.domain.movie.entity.Movie;
 import com.movie.reservation.domain.movie.repository.mapper.MovieMapper;
@@ -47,7 +48,7 @@ public class MovieController {
     }
 
     @PatchMapping("/movies/{id}")
-    public ResponseEntity<MessageResponse> updateMovie(@PathVariable("id") Long movieId, MovieRequestDto requestDto){
+    public ResponseEntity<MessageResponse> updateMovie(@PathVariable("id") Long movieId, UpdateMovieRequestDto requestDto){
 
         movieService.updateMovie(movieId, requestDto);
 

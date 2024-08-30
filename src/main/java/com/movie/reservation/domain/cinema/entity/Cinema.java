@@ -29,4 +29,20 @@ public class Cinema extends Timestamped {
 
     @Column(nullable = false)
     private String gungu;
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateAddress(String address) {
+        this.address = address;
+    }
+
+    public void updateSido(String sido) {
+        this.sido = sido;
+    }
+
+    public void updateGungu(String gungu) {
+        this.gungu = gungu;
+    }
 }

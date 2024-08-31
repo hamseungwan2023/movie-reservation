@@ -26,7 +26,7 @@ public class ScreenService {
 
     public void createScreen(Long cinemaId, ScreenRequestDto requestDto) {
 
-        final Cinema cinema = cinemaService.cinemaGetById(cinemaId);
+        final Cinema cinema = cinemaService.findCinema(cinemaId);
 
         final Screen screen = Screen.builder()
                 .name(requestDto.getName())
@@ -37,13 +37,10 @@ public class ScreenService {
         screenRepository.save(screen);
     }
 
-    public ScreenResponseDto getScreen(Long id) {
+    public ScreenResponseDto getScreen(Long screenId) {
 
-        final Screen screen = screenRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 상영관은 존재하지 않습니다."));
-
+        final Screen screen = findScreen(screenId);
         return ScreenResponseDto.builder()
-//                .cinemaId(screen.getCinemaId())
                 .totalSeat(screen.getTotalSeat())
                 .name(screen.getName())
                 .build();
@@ -58,8 +55,7 @@ public class ScreenService {
 
     public void updateScreen(Long screenId, UpdateScreenRequestDto requestDto) {
 
-        final Screen screen = screenRepository.findById(screenId)
-                .orElseThrow(() -> new NotFoundException("해당 상영관을 찾을 수 없습니다."));
+        final Screen screen = findScreen(screenId);
 
         if (requestDto.getName() != null) {
             screen.updateName(requestDto.getName());
@@ -69,5 +65,10 @@ public class ScreenService {
         }
 
         screenRepository.save(screen);
+    }
+
+    public Screen findScreen(Long id) {
+        return screenRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 상영관은 존재하지 않습니다."));
     }
 }

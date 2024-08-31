@@ -35,8 +35,7 @@ public class CinemaService {
 
     public CinemaResponseDto getCinema(Long id) {
 
-        final Cinema cinema = cinemaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 영화관은 존재하지 않습니다."));
+        final Cinema cinema = cinemaGetById(id);
 
         return CinemaResponseDto.builder()
                 .name(cinema.getName())
@@ -55,8 +54,7 @@ public class CinemaService {
 
     public void updateCinema(Long id, UpdateCinemaRequestDto requestDto) {
 
-        final Cinema existingCinema = cinemaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 영화관은 존재하지 않습니다."));
+        final Cinema existingCinema = cinemaGetById(id);
 
         if (requestDto.getName() != null) {
             existingCinema.updateName(requestDto.getName());
@@ -88,6 +86,11 @@ public class CinemaService {
 
         Pageable pageable = PageRequest.of(page - 1, 20);
 
-        return cinemaRepository.searchBySidoAndGungu(sido,gungu,pageable);
+        return cinemaRepository.searchBySidoAndGungu(sido, gungu, pageable);
+    }
+
+    public Cinema cinemaGetById(Long id) {
+        return cinemaRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 영화관은 존재하지 않습니다."));
     }
 }

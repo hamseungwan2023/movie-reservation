@@ -26,5 +26,13 @@ public class Screen extends Timestamped {
 
     @JoinColumn(nullable = false, name = "cinema_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Cinema cinemaId;
+    private Cinema cinema;
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateTotalSeat(Integer totalSeat) {
+        this.totalSeat = totalSeat;
+    }
 }

@@ -22,7 +22,6 @@ public class Seat extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private Screen screen;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SeatStatus seatStatus;
+    @Column(name = "seat_number", nullable = false)
+    private Integer seatNumber;
 }

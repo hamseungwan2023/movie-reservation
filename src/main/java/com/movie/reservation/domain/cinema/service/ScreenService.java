@@ -18,10 +18,12 @@ public class ScreenService {
 
     private final ScreenRepository screenRepository;
     private final CinemaService cinemaService;
+    private final SeatService seatService;
 
-    public ScreenService(ScreenRepository screenRepository, CinemaService cinemaService) {
+    public ScreenService(ScreenRepository screenRepository, CinemaService cinemaService, SeatService seatService) {
         this.screenRepository = screenRepository;
         this.cinemaService = cinemaService;
+        this.seatService = seatService;
     }
 
     public void createScreen(Long cinemaId, ScreenRequestDto requestDto) {
@@ -35,6 +37,9 @@ public class ScreenService {
                 .build();
 
         screenRepository.save(screen);
+        for(int i = 1; i<=screen.getTotalSeat(); i++){
+            seatService.createSeat(screen,i);
+        }
     }
 
     public ScreenResponseDto getScreen(Long screenId) {

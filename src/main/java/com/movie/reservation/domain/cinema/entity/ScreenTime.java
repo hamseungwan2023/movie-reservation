@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -22,10 +22,10 @@ public class ScreenTime extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private Timestamp startTime;
+    private Date startTime;
 
     @Column(nullable = false)
-    private Timestamp endTime;
+    private Date endTime;
 
     @JoinColumn(nullable = false, name = "screen_id")
     @ManyToOne(fetch = FetchType.LAZY)

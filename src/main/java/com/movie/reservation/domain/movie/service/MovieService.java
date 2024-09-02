@@ -42,8 +42,7 @@ public class MovieService {
 
     public MovieResponseDto getMovie(Long id) {
 
-        final Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 영화를 찾을 수 없습니다."));
+        final Movie movie = findMovie(id);
 
         return MovieResponseDto.builder()
                 .title(movie.getTitle())
@@ -78,7 +77,7 @@ public class MovieService {
             existingMovie.updateGenre(requestDto.getGenre());
         }
 
-        if (requestDto.getDuration() != null){
+        if (requestDto.getDuration() != null) {
             existingMovie.updateDuration(requestDto.getDuration());
         }
 
@@ -87,12 +86,15 @@ public class MovieService {
 
     public void uploadPoster(Long id, MultipartFile file) throws IOException {
 
-        final Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 영화는 존재하지 않습니다."));
-
+        final Movie movie = findMovie(id);
         final String poster = s3Service.s3Upload(file);
 
         movie.updatePoster(poster);
         movieRepository.save(movie);
+    }
+
+    public Movie findMovie(Long id) {
+        return movieRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 영화는 존재하지 않습니다."));
     }
 }

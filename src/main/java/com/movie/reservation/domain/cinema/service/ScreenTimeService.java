@@ -1,11 +1,16 @@
 package com.movie.reservation.domain.cinema.service;
 
 import com.movie.reservation.domain.cinema.dto.request.ScreenTImeRequestDto;
+import com.movie.reservation.domain.cinema.dto.response.ScreenTimeResponseDto;
 import com.movie.reservation.domain.cinema.entity.Screen;
 import com.movie.reservation.domain.cinema.entity.ScreenTime;
 import com.movie.reservation.domain.cinema.repository.ScreenTimeRepository;
+import com.movie.reservation.domain.cinema.repository.mapper.ScreenTimeMapper;
 import com.movie.reservation.domain.movie.entity.Movie;
 import com.movie.reservation.domain.movie.service.MovieService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -43,5 +48,19 @@ public class ScreenTimeService {
                 .movie(movie)
                 .build();
         screenTimeRepository.save(screenTime);
+    }
+
+    public Page<ScreenTimeResponseDto> searchScreenTimeByMovie(Long movieId, int page) {
+
+        final Pageable pageable = PageRequest.of(page - 1, 20);
+
+        return screenTimeRepository.searchScreenTImeByMovie(movieId, pageable);
+    }
+
+    public Page<ScreenTimeResponseDto> searchScreenTimeByStartTime(Long movieId, String time, int page) {
+
+        final Pageable pageable = PageRequest.of(page - 1, 20);
+
+        return screenTimeRepository.searchScreenTImeByStartTime(movieId, time, pageable);
     }
 }

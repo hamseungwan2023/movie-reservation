@@ -34,7 +34,7 @@ public class QSeat extends EntityPathBase<Seat> {
 
     public final QScreen screen;
 
-    public final EnumPath<SeatStatus> seatStatus = createEnum("seatStatus", SeatStatus.class);
+    public final NumberPath<Integer> seatNumber = createNumber("seatNumber", Integer.class);
 
     public QSeat(String variable) {
         this(Seat.class, forVariable(variable), INITS);

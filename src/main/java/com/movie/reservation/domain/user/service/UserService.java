@@ -117,4 +117,9 @@ public class UserService {
                 .username(user.getUsername())
                 .build();
     }
+
+    public User findUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("해당 유저는 존재하지 않습니다."));
+    }
 }

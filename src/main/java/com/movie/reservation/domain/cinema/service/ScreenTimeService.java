@@ -8,6 +8,7 @@ import com.movie.reservation.domain.cinema.repository.ScreenTimeRepository;
 import com.movie.reservation.domain.cinema.repository.mapper.ScreenTimeMapper;
 import com.movie.reservation.domain.movie.entity.Movie;
 import com.movie.reservation.domain.movie.service.MovieService;
+import com.movie.reservation.global.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,5 +63,10 @@ public class ScreenTimeService {
         final Pageable pageable = PageRequest.of(page - 1, 20);
 
         return screenTimeRepository.searchScreenTImeByStartTime(movieId, time, pageable);
+    }
+
+    public ScreenTime findScreenTime(Long screenTimeId) {
+        return screenTimeRepository.findById(screenTimeId)
+                .orElseThrow(() -> new NotFoundException("해당 상영시간은 존재하지 않습니다."));
     }
 }

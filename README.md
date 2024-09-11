@@ -40,7 +40,7 @@ https://www.notion.so/API-fffb95dab55c806c863bd07fe6ea9812
     
     ### 소프트웨어 요구사항
     
-    1. 프로그래밍 언어 : JAVA
+    1. 백 엔드 : JAVA/Spring, Spring Scurity, JWT, JPA, QueryDsl
     2. 데이터베이스 : MYSQL
     3. 프론트 엔드 : React
     4. API 통신 : RESTful API

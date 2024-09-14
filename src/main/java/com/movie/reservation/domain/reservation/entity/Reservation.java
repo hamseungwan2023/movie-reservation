@@ -36,4 +36,9 @@ public class Reservation extends Timestamped {
     @JoinColumn(nullable = false, name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public void updateReservation(ReservationStatus reservationStatus, User user){
+        this.reservationStatus = reservationStatus;
+        this.user = user;
+    }
 }

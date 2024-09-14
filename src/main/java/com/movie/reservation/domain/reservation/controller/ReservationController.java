@@ -5,6 +5,7 @@ import com.movie.reservation.global.dto.MessageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,9 +29,10 @@ public class ReservationController {
     }
 
     @DeleteMapping("/reservations/{reservationId}/cancel")
-    public ResponseEntity<MessageResponse> cancelReservation(@PathVariable("reservationId") Long reservationId){
+    public ResponseEntity<MessageResponse> cancelReservation(@PathVariable("reservationId") Long reservationId,
+                                                             @AuthenticationPrincipal UserDetails userDetails){
 
-        reservationService.cancelReservation(reservationId);
+        reservationService.cancelReservation(reservationId, userDetails.getUsername());
 
         return ResponseEntity.ok(new MessageResponse(200, "예약 취소 성공"));
     }

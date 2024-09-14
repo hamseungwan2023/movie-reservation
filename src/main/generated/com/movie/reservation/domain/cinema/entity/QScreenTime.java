@@ -27,7 +27,7 @@ public class QScreenTime extends EntityPathBase<ScreenTime> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final DateTimePath<java.util.Date> endTime = createDateTime("endTime", java.util.Date.class);
+    public final StringPath endTime = createString("endTime");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -38,7 +38,7 @@ public class QScreenTime extends EntityPathBase<ScreenTime> {
 
     public final QScreen screen;
 
-    public final DateTimePath<java.util.Date> startTime = createDateTime("startTime", java.util.Date.class);
+    public final StringPath startTime = createString("startTime");
 
     public QScreenTime(String variable) {
         this(ScreenTime.class, forVariable(variable), INITS);

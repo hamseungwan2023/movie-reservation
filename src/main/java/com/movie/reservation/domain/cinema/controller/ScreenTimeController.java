@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class ScreenTimeController {
@@ -40,13 +42,14 @@ public class ScreenTimeController {
                         screenTimeService.searchScreenTimeByMovie(movieId, page)));
     }
 
-    @GetMapping("/movies/{movieId}/day/screenTimes")
+    @GetMapping("/screens/{screenId}/movies/{movieId}/day/screenTimes")
     public ResponseEntity<DataResponse<Page<ScreenTimeResponseDto>>> searchScreenTimeByStartTime(@PathVariable("movieId") Long movieId,
+                                                                                                 @PathVariable("screenId") Long screenId,
                                                                                                  @RequestParam(name = "page", defaultValue = "1") int page,
                                                                                                  @RequestParam(name = "day") String day) {
         return ResponseEntity.ok
                 (new DataResponse<>(200,
                         "해당 영화와 상영날짜를 이용한 상영시간 조회 성공",
-                        screenTimeService.searchScreenTimeByStartTime(movieId, day, page)));
+                        screenTimeService.searchScreenTimeByStartTime(movieId, screenId, day, page)));
     }
 }

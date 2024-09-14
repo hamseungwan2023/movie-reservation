@@ -8,6 +8,7 @@ import com.movie.reservation.domain.movie.entity.QMovie;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepositor
         QCinema cinema = QCinema.cinema;
 
         JPQLQuery<ScreenTimeResponseDto> query = jpaQueryFactory
-                .select(Projections.constructor(ScreenTimeResponseDto.class,
+                .select(Projections.bean(ScreenTimeResponseDto.class,
                         screenTime.id.as("id"),
                         movie.title.as("title"),
                         movie.duration.as("duration"),
@@ -59,14 +60,15 @@ public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepositor
     }
 
     @Override
-    public Page<ScreenTimeResponseDto> searchScreenTImeByStartTime(Long movieId, String time, Pageable pageable) {
+    @Cacheable
+    public Page<ScreenTimeResponseDto> searchScreenTImeByStartTime(Long movieId, Long screenId, String day, Pageable pageable) {
 
         QMovie movie = QMovie.movie;
         QScreenTime screenTime = QScreenTime.screenTime;
         QScreen screen = QScreen.screen;
         QCinema cinema = QCinema.cinema;
 
-        JPQLQuery<ScreenTimeResponseDto> query = jpaQueryFactory
+        JPQLQuery<ScreenTimeResponseDto> fetchQuery = jpaQueryFactory
                 .select(Projections.constructor(ScreenTimeResponseDto.class,
                         screenTime.id.as("id"),
                         movie.title.as("title"),
@@ -81,15 +83,25 @@ public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepositor
                 .join(screenTime.movie, movie)
                 .join(screenTime.screen, screen)
                 .join(screen.cinema, cinema)
-                .where(screenTime.startTime.stringValue().like(time + "%").and(movie.id.eq(movieId)))
+                .where(screenTime.startTime.like(day + "%")
+                        .and(movie.id.eq(movieId)
+                                .and(screen.id.eq(screenId))))
                 .orderBy(screenTime.createdAt.desc());
 
-        List<ScreenTimeResponseDto> content = query
+        JPQLQuery<Long> countQuery = jpaQueryFactory
+                .select(screenTime.count())
+                .from(screenTime)
+                .leftJoin(screenTime.movie, movie)
+                .where(screenTime.startTime.like(day + "%")
+                        .and(movie.id.eq(movieId))
+                );
+
+        List<ScreenTimeResponseDto> content = fetchQuery
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = query.fetchCount();
+        long total = countQuery.fetchOne();
 
         return new PageImpl<>(content, pageable, total);
     }

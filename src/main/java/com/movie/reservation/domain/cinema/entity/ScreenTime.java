@@ -22,10 +22,10 @@ public class ScreenTime extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private Date startTime;
+    private String startTime;
 
     @Column(nullable = false)
-    private Date endTime;
+    private String endTime;
 
     @JoinColumn(nullable = false, name = "screen_id")
     @ManyToOne(fetch = FetchType.LAZY)

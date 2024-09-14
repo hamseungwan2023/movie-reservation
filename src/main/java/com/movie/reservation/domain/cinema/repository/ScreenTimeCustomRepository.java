@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface ScreenTimeCustomRepository {
     Page<ScreenTimeResponseDto> searchScreenTImeByMovie(Long movieId, Pageable pageable);
 
-    Page<ScreenTimeResponseDto> searchScreenTImeByStartTime(Long movieId, String time, Pageable pageable);
+    Page<ScreenTimeResponseDto> searchScreenTImeByStartTime(Long movieId, Long screenId, String time, Pageable pageable);
 }

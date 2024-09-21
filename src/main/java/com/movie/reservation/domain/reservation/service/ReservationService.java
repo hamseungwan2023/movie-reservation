@@ -11,30 +11,40 @@ import com.movie.reservation.domain.user.entity.User;
 import com.movie.reservation.domain.user.service.UserService;
 import com.movie.reservation.global.exception.BadRequestException;
 import com.movie.reservation.global.exception.NotFoundException;
-import jakarta.transaction.Transactional;
+import com.movie.reservation.global.lock.DistributedLock;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
+@Slf4j
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final RedissonClient redissonClient;
     private final ScreenTimeService screenTimeService;
     private final SeatService seatService;
     private final UserService userService;
 
-    public ReservationService(ReservationRepository reservationRepository, SimpMessagingTemplate simpMessagingTemplate, ScreenTimeService screenTimeService, SeatService seatService, UserService userService) {
+    public ReservationService(ReservationRepository reservationRepository, SimpMessagingTemplate simpMessagingTemplate, RedissonClient redissonClient, ScreenTimeService screenTimeService, SeatService seatService, UserService userService) {
         this.reservationRepository = reservationRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.redissonClient = redissonClient;
         this.screenTimeService = screenTimeService;
         this.seatService = seatService;
         this.userService = userService;
     }
 
     @Transactional
+    @DistributedLock(key = "#screenTimeId + ':' + #seatNumber")
     public void reserveSeat(Long screenId, int seatNumber, Long screenTimeId, String username) {
 
         final User user = userService.findUser(username);
@@ -46,6 +56,7 @@ public class ReservationService {
             } else if (existReservation.get().getReservationStatus().equals(ReservationStatus.CANCELLED)) {
                 existReservation.get().updateReservation(ReservationStatus.CONFIRMED, user);
                 simpMessagingTemplate.convertAndSend("/topic/seats/" + screenTimeId, existReservation);
+                log.info("예약 성공한 유저 : {}", username);
                 return;
             }
         }
@@ -61,6 +72,7 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         simpMessagingTemplate.convertAndSend("/topic/seats/" + screenTimeId, reservation);
+        log.info("예약 성공한 유저 : {}", username);
     }
 
     @Transactional

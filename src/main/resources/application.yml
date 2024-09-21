@@ -39,16 +39,16 @@ jwt:
 custom:
   manage-key: AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC
 
-cloud:
-  aws:
-    s3:
-      bucket:
-        name: wan-movie-bucket
-        url: https://s3.ap-northeast-2.amazonaws.com/wan-movie-bucket
-    region:
-      static: ap-northeast-2
-    credentials :
-      accessKey: ${AWS_ACCESSKEY}
-      secretKey : ${AWS_SECRETKEY}
-    stack:
-      auto: false
+#cloud:
+#  aws:
+#    s3:
+#      bucket:
+#        name: wan-movie-bucket
+#        url: https://s3.ap-northeast-2.amazonaws.com/wan-movie-bucket
+#    region:
+#      static: ap-northeast-2
+#    credentials :
+#      accessKey: ${AWS_ACCESSKEY}
+#      secretKey : ${AWS_SECRETKEY}
+#    stack:
+#      auto: false

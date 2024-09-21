@@ -42,11 +42,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.16.8'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.460'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    testImplementation 'org.mockito:mockito-core:5.5.0' // Mockito 코어 라이브러리
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0' // JUnit 5와 통합을 위한 Mockito
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0' // JUnit 5
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 }
 
 tasks.named('test') {
@@ -58,6 +60,7 @@ def generated = 'src/main/generated'
 // querydsl QClass 파일 생성 위치를 지정
 tasks.withType(JavaCompile) {
     options.getGeneratedSourceOutputDirectory().set(file(generated))
+    options.compilerArgs << "-parameters"
 }
 
 // java source set 에 querydsl QClass 위치 추가

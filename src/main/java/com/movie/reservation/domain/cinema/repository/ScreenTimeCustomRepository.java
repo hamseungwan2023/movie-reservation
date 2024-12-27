@@ -4,8 +4,12 @@ import com.movie.reservation.domain.cinema.dto.response.ScreenTimeResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface ScreenTimeCustomRepository {
     Page<ScreenTimeResponseDto> searchScreenTImeByMovie(Long movieId, Pageable pageable);
 
     Page<ScreenTimeResponseDto> searchScreenTImeByStartTime(Long movieId, Long screenId, String time, Pageable pageable);
+
+    Optional<Long> findScreenTime(Long screenTimeId);
 }

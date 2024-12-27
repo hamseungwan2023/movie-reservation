@@ -4,6 +4,7 @@ import com.movie.reservation.domain.cinema.dto.response.ScreenTimeResponseDto;
 import com.movie.reservation.domain.cinema.entity.QCinema;
 import com.movie.reservation.domain.cinema.entity.QScreen;
 import com.movie.reservation.domain.cinema.entity.QScreenTime;
+import com.movie.reservation.domain.cinema.entity.ScreenTime;
 import com.movie.reservation.domain.movie.entity.QMovie;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
@@ -12,13 +13,16 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-
+    private PageableExecutionUtils pageableExecutionUtils;
     public ScreenTimeCustomRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
@@ -32,7 +36,7 @@ public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepositor
         QCinema cinema = QCinema.cinema;
 
         JPQLQuery<ScreenTimeResponseDto> query = jpaQueryFactory
-                .select(Projections.bean(ScreenTimeResponseDto.class,
+                .select(Projections.constructor(ScreenTimeResponseDto.class,
                         screenTime.id.as("id"),
                         movie.title.as("title"),
                         movie.duration.as("duration"),
@@ -54,9 +58,7 @@ public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepositor
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = query.fetchCount();
-
-        return new PageImpl<>(content, pageable, total);
+        return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
     }
 
     @Override
@@ -86,23 +88,22 @@ public class ScreenTimeCustomRepositoryImpl implements ScreenTimeCustomRepositor
                 .where(screenTime.startTime.like(day + "%")
                         .and(movie.id.eq(movieId)
                                 .and(screen.id.eq(screenId))))
-                .orderBy(screenTime.createdAt.desc());
-
-        JPQLQuery<Long> countQuery = jpaQueryFactory
-                .select(screenTime.count())
-                .from(screenTime)
-                .leftJoin(screenTime.movie, movie)
-                .where(screenTime.startTime.like(day + "%")
-                        .and(movie.id.eq(movieId))
-                );
+                .orderBy(screenTime.createdAt.desc())
+                .limit(20);
 
         List<ScreenTimeResponseDto> content = fetchQuery
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = countQuery.fetchOne();
+        return PageableExecutionUtils.getPage(content, pageable, fetchQuery::fetchCount);
+    }
 
-        return new PageImpl<>(content, pageable, total);
+    public Optional<Long> findScreenTime(Long screenTimeId) {
+        QScreenTime screenTime = QScreenTime.screenTime;
+
+        return Optional.ofNullable(jpaQueryFactory.select(screenTime.id)
+                .from(screenTime)
+                .where(screenTime.id.eq(screenTimeId)).fetchOne());
     }
 }

@@ -21,17 +21,15 @@ public class Reservation extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "reservation_status")
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus;
 
-    @JoinColumn(nullable = false, name = "screen_time_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ScreenTime screenTime;
+    @Column(nullable = false, name = "screen_time_id")
+    private Long screenTime;
 
-    @JoinColumn(nullable = false, name = "seat_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Seat seat;
+    @Column(nullable = false, name = "seat_id")
+    private Long seat;
 
     @JoinColumn(nullable = false, name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)

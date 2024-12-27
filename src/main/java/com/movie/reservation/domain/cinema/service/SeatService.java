@@ -25,8 +25,8 @@ public class SeatService {
         seatRepository.save(seat);
     }
 
-    public Seat findSeat(Long screenId, int seatNumber){
-        return seatRepository.findSeat(screenId, seatNumber)
+    public Long findSeat(Long seatId){
+        return seatRepository.findSeat(seatId)
                 .orElseThrow(()-> new NotFoundException("해당 좌석은 존재하지 않습니다."));
     }
 }

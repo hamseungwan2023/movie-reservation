@@ -2,16 +2,16 @@ package com.movie.reservation.domain.cinema.controller;
 
 import com.movie.reservation.domain.cinema.dto.request.ScreenTImeRequestDto;
 import com.movie.reservation.domain.cinema.dto.response.ScreenTimeResponseDto;
-import com.movie.reservation.domain.cinema.repository.mapper.ScreenTimeMapper;
 import com.movie.reservation.domain.cinema.service.ScreenTimeService;
 import com.movie.reservation.global.dto.DataResponse;
 import com.movie.reservation.global.dto.MessageResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +19,8 @@ public class ScreenTimeController {
 
     private final ScreenTimeService screenTimeService;
 
+    @Autowired
+    private PagedResourcesAssembler assembler;
     public ScreenTimeController(ScreenTimeService screenTimeService) {
         this.screenTimeService = screenTimeService;
     }
@@ -34,12 +36,12 @@ public class ScreenTimeController {
     }
 
     @GetMapping("/movies/{movieId}/screenTimes")
-    public ResponseEntity<DataResponse<Page<ScreenTimeResponseDto>>> searchScreenTimeByMovieId(@PathVariable("movieId") Long movieId,
-                                                                                               @RequestParam(name = "page", defaultValue = "1") int page) {
+    public ResponseEntity<DataResponse<PagedModel<Page<ScreenTimeResponseDto>>>> searchScreenTimeByMovieId(@PathVariable("movieId") Long movieId,
+                                                                @RequestParam(name = "page", defaultValue = "1") int page) {
         return ResponseEntity.ok
                 (new DataResponse<>(200,
                         "해당 영화에 대한 상영시간 조회 성공",
-                        screenTimeService.searchScreenTimeByMovie(movieId, page)));
+                        assembler.toModel(screenTimeService.searchScreenTimeByMovie(movieId, page))));
     }
 
     @GetMapping("/screens/{screenId}/movies/{movieId}/day/screenTimes")

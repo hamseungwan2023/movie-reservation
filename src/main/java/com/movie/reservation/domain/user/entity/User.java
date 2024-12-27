@@ -37,11 +37,11 @@ public class User extends Timestamped implements UserDetails {
     @Column(name = "refresh_token")
     private String refreshToken;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "user_role_enum")
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_withdraw")
     @Enumerated(EnumType.STRING)
     private IsWithDraw isWithDraw;
 

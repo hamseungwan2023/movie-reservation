@@ -38,9 +38,9 @@
 //    @Override
 //    public void run(String... args) throws Exception {
 //        Movie movie = movieService.findMovie(1L);
-//        Screen screen = screenService.findScreen(1L);
-//        Cinema cinema = cinemaService.findCinema(1L);
-//        for (long i = 1L; i <= 1000000; i++) {
+//        Screen screen = screenService.findScreen(10L);
+//        Cinema cinema = cinemaService.findCinema(10L);
+//        for (long i = 1L; i <= 100000; i++) {
 //
 //            final Date startTime = new Date();
 //            final Integer runningTime = movie.getDuration();

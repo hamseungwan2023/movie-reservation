@@ -18,15 +18,29 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping("/screens/{screenId}/screenTimes/{screenTimeId}/reserve")
-    public ResponseEntity<MessageResponse> reserveSeat(@PathVariable("screenId") Long screenId,
-                                                       @PathVariable("screenTimeId") Long screenTimeId,
-                                                       @AuthenticationPrincipal UserDetails userDetails,
-                                                       @RequestParam(name = "seatNumber") int seatNumber) {
+    @PostMapping("/screenTimes/{screenTimesId}/seats/{seatId}/reserve")
+    public ResponseEntity<MessageResponse> reserveSeat(@PathVariable("screenTimesId") Long screenTimeId,
+                                                       @PathVariable("seatId") Long seatId,
+//                                                       @AuthenticationPrincipal UserDetails userDetails,
+                                                       @RequestParam(name = "username") String username) {
 
-        reservationService.reserveSeat(screenId, seatNumber, screenTimeId, userDetails.getUsername());
+//        reservationService.reserveSeat(screenId, seatNumber, screenTimeId, userDetails.getUsername());
+        reservationService.reserveSeat(screenTimeId, seatId, username);
         return ResponseEntity.ok(new MessageResponse(200, "좌석 예약 성공"));
     }
+
+//    @PostMapping("/screens/{screenId}/screenTimes/{screenTimeId}/reserve/v1")
+//    public ResponseEntity<MessageResponse> reserveSeatV1(@PathVariable("screenId") Long screenId,
+//                                                       @PathVariable("screenTimeId") Long screenTimeId,
+////                                                       @AuthenticationPrincipal UserDetails userDetails,
+//                                                       @RequestParam(name = "username") String username,
+//                                                       @RequestParam(name = "seatNumber") int seatNumber) {
+//
+////        reservationService.reserveSeat(screenId, seatNumber, screenTimeId, userDetails.getUsername());
+//        reservationService.reserveSeatV1(screenId, seatNumber, screenTimeId, username);
+//        return ResponseEntity.ok(new MessageResponse(200, "좌석 예약 성공"));
+//    }
+
 
     @DeleteMapping("/reservations/{reservationId}/cancel")
     public ResponseEntity<MessageResponse> cancelReservation(@PathVariable("reservationId") Long reservationId,

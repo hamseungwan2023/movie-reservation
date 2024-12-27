@@ -1,7 +1,9 @@
 package com.movie.reservation.domain.reservation.repository;
 
 import com.movie.reservation.domain.reservation.entity.Reservation;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -9,10 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationCustomRepository {
 
-    @Query("SELECT r " +
-            "FROM Reservation r " +
-            "WHERE r.screenTime.id = :screenTimeId AND r.seat.id = :seatId")
-    Optional<Reservation> findReservation(@Param("screenTimeId") Long screenTimeId, @Param("seatId") Long seatId);
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+
 }

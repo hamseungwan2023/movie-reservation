@@ -44,6 +44,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/users/signup").permitAll()
                                 .requestMatchers("/api/users/login").permitAll()
+                                .requestMatchers("/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN") // 어드민 권한 요구
                                 .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling ->

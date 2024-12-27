@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class ScreenTimeService {
@@ -75,8 +76,8 @@ public class ScreenTimeService {
         return screenTimeRepository.searchScreenTImeByStartTime(movieId, screenId, time, pageable);
     }
 
-    public ScreenTime findScreenTime(Long screenTimeId) {
-        return screenTimeRepository.findById(screenTimeId)
+    public Long findScreenTime(Long screenTimeId) {
+        return screenTimeRepository.findScreenTime(screenTimeId)
                 .orElseThrow(() -> new NotFoundException("해당 상영시간은 존재하지 않습니다."));
     }
 }

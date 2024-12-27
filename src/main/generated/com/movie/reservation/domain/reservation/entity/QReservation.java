@@ -34,9 +34,9 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final EnumPath<ReservationStatus> reservationStatus = createEnum("reservationStatus", ReservationStatus.class);
 
-    public final com.movie.reservation.domain.cinema.entity.QScreenTime screenTime;
+    public final NumberPath<Long> screenTime = createNumber("screenTime", Long.class);
 
-    public final com.movie.reservation.domain.cinema.entity.QSeat seat;
+    public final NumberPath<Long> seat = createNumber("seat", Long.class);
 
     public final com.movie.reservation.domain.user.entity.QUser user;
 
@@ -58,8 +58,6 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public QReservation(Class<? extends Reservation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.screenTime = inits.isInitialized("screenTime") ? new com.movie.reservation.domain.cinema.entity.QScreenTime(forProperty("screenTime"), inits.get("screenTime")) : null;
-        this.seat = inits.isInitialized("seat") ? new com.movie.reservation.domain.cinema.entity.QSeat(forProperty("seat"), inits.get("seat")) : null;
         this.user = inits.isInitialized("user") ? new com.movie.reservation.domain.user.entity.QUser(forProperty("user")) : null;
     }
 

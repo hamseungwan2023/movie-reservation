@@ -8,7 +8,7 @@ import com.movie.reservation.domain.movie.entity.Movie;
 import com.movie.reservation.domain.movie.repository.MovieRepository;
 import com.movie.reservation.domain.movie.repository.mapper.MovieMapper;
 import com.movie.reservation.global.exception.NotFoundException;
-import com.movie.reservation.global.service.S3Service;
+//import com.movie.reservation.global.service.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +21,11 @@ import java.io.IOException;
 public class MovieService {
 
     private final MovieRepository movieRepository;
-    private final S3Service s3Service;
+//    private final S3Service s3Service;
 
-    public MovieService(MovieRepository movieRepository, S3Service s3Service) {
+    public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.s3Service = s3Service;
+//        this.s3Service = s3Service;
     }
 
     public void createMovie(MovieRequestDto requestDto) {
@@ -87,9 +87,9 @@ public class MovieService {
     public void uploadPoster(Long id, MultipartFile file) throws IOException {
 
         final Movie movie = findMovie(id);
-        final String poster = s3Service.s3Upload(file);
+//        final String poster = s3Service.s3Upload(file);
 
-        movie.updatePoster(poster);
+//        movie.updatePoster(poster);
         movieRepository.save(movie);
     }
 

@@ -5,50 +5,11 @@ spring:
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.movie.reservation
+  configuration:
+    map-underscore-to-camel-case: true
 
-  jackson:
-    serialization:
-      FAIL_ON_EMPTY_BEANS: false
-
-  datasource.hikari:
-    maximum-pool-size: 10
-    minimum-idle: 2
-    idle-timeout: 10000
-    max-lifetime: 1800000
-    connection-timeout: 30000
-
-jwt:
-  secret:
-    key: 7Iqk7YyM66W07YOA7L2U65Sp7YG065+9U3ByaW5n6rCV7J2Y7Yqc7YSw7LWc7JuQ67mI7J6F64uI64ukLg==
-  access:
-    token:
-      expiration: 36000000
-  refresh:
-    token:
-      expiration: 2592000
-
-custom:
-  manage-key: AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC
-
-#cloud:
-#  aws:
-#    s3:
-#      bucket:
-#        name: wan-movie-bucket
-#        url: https://s3.ap-northeast-2.amazonaws.com/wan-movie-bucket
-#    region:
-#      static: ap-northeast-2
-#    credentials :
-#      accessKey: ${AWS_ACCESSKEY}
-#      secretKey : ${AWS_SECRETKEY}
-#    stack:
-#      auto: false
+server:
+  port: 8080

@@ -2,7 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.movie.reservation.reservation.mapper.ReservationMapper">
+
     <insert id="insert" parameterType="com.movie.reservation.reservation.Reservation" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO reservation(reservation_status, screen_time_id, seat_number, username)
         VALUES (#{reservationStatus}, #{screenTimeId}, #{seatNumber}, #{username})
@@ -30,4 +32,5 @@
     <delete id="delete">
         DELETE FROM reservation WHERE id = #{id}
     </delete>
+    
 </mapper>

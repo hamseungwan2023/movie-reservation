@@ -1,13 +1,16 @@
 package com.movie.reservation.cinema;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * 영화관 테이블
- */
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cinema {
     private Long id;
     private String name; // 영화관 이름 예) CGV 강남

@@ -16,7 +16,12 @@ public class ScreenTimeService {
 
     @Transactional
     public ScreenTime create(ScreenTimeRequest request) {
-        ScreenTime screenTime = new ScreenTime(null, request.startTime(), request.endTime(), request.screenId(), request.movieId(), null, null);
+        ScreenTime screenTime = ScreenTime.builder()
+                .startTime(request.startTime())
+                .endTime(request.endTime())
+                .screenId(request.screenId())
+                .movieId(request.movieId())
+                .build();
         screenTimeMapper.insert(screenTime);
         return screenTime;
     }
@@ -33,7 +38,13 @@ public class ScreenTimeService {
     @Transactional
     public ScreenTime update(Long id, ScreenTimeRequest request) {
         get(id);
-        ScreenTime screenTime = new ScreenTime(id, request.startTime(), request.endTime(), request.screenId(), request.movieId(), null, null);
+        ScreenTime screenTime = ScreenTime.builder()
+                .id(id)
+                .startTime(request.startTime())
+                .endTime(request.endTime())
+                .screenId(request.screenId())
+                .movieId(request.movieId())
+                .build();
         screenTimeMapper.update(screenTime);
         return get(id);
     }

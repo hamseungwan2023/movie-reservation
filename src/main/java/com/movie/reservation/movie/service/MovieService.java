@@ -18,7 +18,13 @@ public class MovieService {
 
     @Transactional
     public Movie create(MovieRequest request) {
-        Movie movie = new Movie(null, request.title(), request.description(), request.genre(), request.poster(), request.duration(), null, null);
+        Movie movie = Movie.builder()
+                .title(request.title())
+                .description(request.description())
+                .genre(request.genre())
+                .poster(request.poster())
+                .duration(request.duration())
+                .build();
         movieMapper.insert(movie);
         return movie;
     }
@@ -34,7 +40,14 @@ public class MovieService {
     @Transactional
     public Movie update(Long id, MovieRequest request) {
         get(id);
-        Movie movie = new Movie(id, request.title(), request.description(), request.genre(), request.poster(), request.duration(), null, null);
+        Movie movie = Movie.builder()
+                .id(id)
+                .title(request.title())
+                .description(request.description())
+                .genre(request.genre())
+                .poster(request.poster())
+                .duration(request.duration())
+                .build();
         movieMapper.update(movie);
         return get(id);
     }

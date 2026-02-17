@@ -16,7 +16,11 @@ public class ScreenService {
 
     @Transactional
     public Screen create(ScreenRequest request) {
-        Screen screen = new Screen(null, request.name(), request.totalSeat(), request.cinemaId(), null, null);
+        Screen screen = Screen.builder()
+                .name(request.name())
+                .totalSeat(request.totalSeat())
+                .cinemaId(request.cinemaId())
+                .build();
         screenMapper.insert(screen);
         return screen;
     }
@@ -32,7 +36,12 @@ public class ScreenService {
     @Transactional
     public Screen update(Long id, ScreenRequest request) {
         get(id);
-        Screen screen = new Screen(id, request.name(), request.totalSeat(), request.cinemaId(), null, null);
+        Screen screen = Screen.builder()
+                .id(id)
+                .name(request.name())
+                .totalSeat(request.totalSeat())
+                .cinemaId(request.cinemaId())
+                .build();
         screenMapper.update(screen);
         return get(id);
     }

@@ -18,11 +18,16 @@ public class ReservationService {
     @Transactional
     public Reservation reserve(ReservationRequest request) {
         Reservation existing = reservationMapper.findByScreenTimeAndSeat(request.screenTimeId(), request.seatNumber());
-        if (existing != null && existing.reservationStatus() == ReservationStatus.CONFIRMED) {
+        if (existing != null && existing.getReservationStatus() == ReservationStatus.CONFIRMED) {
             throw new IllegalArgumentException("이미 예약된 좌석입니다.");
         }
 
-        Reservation reservation = new Reservation(null, ReservationStatus.CONFIRMED, request.screenTimeId(), request.seatNumber(), request.username(), null, null);
+        Reservation reservation = Reservation.builder()
+                .reservationStatus(ReservationStatus.CONFIRMED)
+                .screenTimeId(request.screenTimeId())
+                .seatNumber(request.seatNumber())
+                .username(request.username())
+                .build();
         reservationMapper.insert(reservation);
         return reservation;
     }

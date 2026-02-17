@@ -1,19 +1,21 @@
 package com.movie.reservation.seat;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * 좌석 테이블
- * 향후 rowName + seatNumber 컬럼 추가 가능성
- */
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Seat {
     private Long id;
-    private Long screenId; // 상영관 id
-    private String rowName; // 열 이름 ex) A열 11번 좌석
-    private Integer seatNumber; // 해당열의 몇번 좌석 인지
+    private Long screenId; // 상영관 ID
+    private String rowName; // 좌석 열 이름 예) A
+    private Integer seatNumber; // 좌석 번호
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

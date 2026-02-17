@@ -26,4 +26,5 @@
     <delete id="delete">
         DELETE FROM seat WHERE id=#{id}
     </delete>
+  
 </mapper>

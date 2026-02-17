@@ -18,7 +18,12 @@ public class CinemaService {
 
     @Transactional
     public Cinema create(CinemaRequest request) {
-        Cinema cinema = new Cinema(null, request.name(), request.address(), request.sido(), request.gungu(), null, null);
+        Cinema cinema = Cinema.builder()
+                .name(request.name())
+                .address(request.address())
+                .sido(request.sido())
+                .gungu(request.gungu())
+                .build();
         cinemaMapper.insert(cinema);
         return cinema;
     }
@@ -34,7 +39,13 @@ public class CinemaService {
     @Transactional
     public Cinema update(Long id, CinemaRequest request) {
         get(id);
-        Cinema cinema = new Cinema(id, request.name(), request.address(), request.sido(), request.gungu(), null, null);
+        Cinema cinema = Cinema.builder()
+                .id(id)
+                .name(request.name())
+                .address(request.address())
+                .sido(request.sido())
+                .gungu(request.gungu())
+                .build();
         cinemaMapper.update(cinema);
         return get(id);
     }

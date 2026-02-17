@@ -16,7 +16,11 @@ public class SeatService {
 
     @Transactional
     public Seat create(SeatRequest request) {
-        Seat seat = new Seat(null, request.screenId(), request.rowName(), request.seatNumber(), null, null);
+        Seat seat = Seat.builder()
+                .screenId(request.screenId())
+                .rowName(request.rowName())
+                .seatNumber(request.seatNumber())
+                .build();
         seatMapper.insert(seat);
         return seat;
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movie.reservation.cinema.mapper.CinemaMapper">
+    <insert id="insert" parameterType="com.movie.reservation.cinema.Cinema" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cinema(name, address, sido, gungu)
+        VALUES (#{name}, #{address}, #{sido}, #{gungu})
+    </insert>
+
+    <select id="findById" resultType="com.movie.reservation.cinema.Cinema">
+        SELECT * FROM cinema WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultType="com.movie.reservation.cinema.Cinema">
+        SELECT * FROM cinema ORDER BY id DESC
+    </select>
+
+    <update id="update" parameterType="com.movie.reservation.cinema.Cinema">
+        UPDATE cinema
+        SET name=#{name}, address=#{address}, sido=#{sido}, gungu=#{gungu}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM cinema WHERE id=#{id}
+    </delete>
+</mapper>

@@ -2,7 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.movie.reservation.cinema.mapper.CinemaMapper">
+
     <insert id="insert" parameterType="com.movie.reservation.cinema.Cinema" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cinema(name, address, sido, gungu)
         VALUES (#{name}, #{address}, #{sido}, #{gungu})
@@ -25,4 +27,5 @@
     <delete id="delete">
         DELETE FROM cinema WHERE id=#{id}
     </delete>
+
 </mapper>

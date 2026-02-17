@@ -4,6 +4,7 @@ import com.movie.reservation.screentime.ScreenTime;
 import com.movie.reservation.screentime.ScreenTimeRequest;
 import com.movie.reservation.screentime.mapper.ScreenTimeMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,12 +14,9 @@ public class ScreenTimeService {
 
     public ScreenTimeService(ScreenTimeMapper screenTimeMapper) { this.screenTimeMapper = screenTimeMapper; }
 
+    @Transactional
     public ScreenTime create(ScreenTimeRequest request) {
-        ScreenTime screenTime = new ScreenTime();
-        screenTime.setStartTime(request.startTime());
-        screenTime.setEndTime(request.endTime());
-        screenTime.setScreenId(request.screenId());
-        screenTime.setMovieId(request.movieId());
+        ScreenTime screenTime = new ScreenTime(null, request.startTime(), request.endTime(), request.screenId(), request.movieId(), null, null);
         screenTimeMapper.insert(screenTime);
         return screenTime;
     }
@@ -32,15 +30,14 @@ public class ScreenTimeService {
     public List<ScreenTime> getByMovie(Long movieId) { return screenTimeMapper.findByMovieId(movieId); }
     public List<ScreenTime> getByScreen(Long screenId) { return screenTimeMapper.findByScreenId(screenId); }
 
+    @Transactional
     public ScreenTime update(Long id, ScreenTimeRequest request) {
-        ScreenTime screenTime = get(id);
-        screenTime.setStartTime(request.startTime());
-        screenTime.setEndTime(request.endTime());
-        screenTime.setScreenId(request.screenId());
-        screenTime.setMovieId(request.movieId());
+        get(id);
+        ScreenTime screenTime = new ScreenTime(id, request.startTime(), request.endTime(), request.screenId(), request.movieId(), null, null);
         screenTimeMapper.update(screenTime);
         return get(id);
     }
 
+    @Transactional
     public void delete(Long id) { screenTimeMapper.delete(id); }
 }

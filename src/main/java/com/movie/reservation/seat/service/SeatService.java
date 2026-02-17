@@ -4,6 +4,7 @@ import com.movie.reservation.seat.Seat;
 import com.movie.reservation.seat.SeatRequest;
 import com.movie.reservation.seat.mapper.SeatMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,11 +14,9 @@ public class SeatService {
 
     public SeatService(SeatMapper seatMapper) { this.seatMapper = seatMapper; }
 
+    @Transactional
     public Seat create(SeatRequest request) {
-        Seat seat = new Seat();
-        seat.setScreenId(request.screenId());
-        seat.setRowName(request.rowName());
-        seat.setSeatNumber(request.seatNumber());
+        Seat seat = new Seat(null, request.screenId(), request.rowName(), request.seatNumber(), null, null);
         seatMapper.insert(seat);
         return seat;
     }
@@ -30,5 +29,6 @@ public class SeatService {
 
     public List<Seat> getByScreen(Long screenId) { return seatMapper.findByScreenId(screenId); }
 
+    @Transactional
     public void delete(Long id) { seatMapper.delete(id); }
 }

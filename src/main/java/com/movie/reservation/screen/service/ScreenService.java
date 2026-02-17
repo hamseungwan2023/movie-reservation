@@ -4,6 +4,7 @@ import com.movie.reservation.screen.Screen;
 import com.movie.reservation.screen.ScreenRequest;
 import com.movie.reservation.screen.mapper.ScreenMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,11 +14,9 @@ public class ScreenService {
 
     public ScreenService(ScreenMapper screenMapper) { this.screenMapper = screenMapper; }
 
+    @Transactional
     public Screen create(ScreenRequest request) {
-        Screen screen = new Screen();
-        screen.setName(request.name());
-        screen.setTotalSeat(request.totalSeat());
-        screen.setCinemaId(request.cinemaId());
+        Screen screen = new Screen(null, request.name(), request.totalSeat(), request.cinemaId(), null, null);
         screenMapper.insert(screen);
         return screen;
     }
@@ -30,14 +29,14 @@ public class ScreenService {
 
     public List<Screen> getByCinema(Long cinemaId) { return screenMapper.findByCinemaId(cinemaId); }
 
+    @Transactional
     public Screen update(Long id, ScreenRequest request) {
-        Screen screen = get(id);
-        screen.setName(request.name());
-        screen.setTotalSeat(request.totalSeat());
-        screen.setCinemaId(request.cinemaId());
+        get(id);
+        Screen screen = new Screen(id, request.name(), request.totalSeat(), request.cinemaId(), null, null);
         screenMapper.update(screen);
         return get(id);
     }
 
+    @Transactional
     public void delete(Long id) { screenMapper.delete(id); }
 }

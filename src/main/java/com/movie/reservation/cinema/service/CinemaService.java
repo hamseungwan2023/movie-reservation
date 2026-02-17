@@ -4,6 +4,7 @@ import com.movie.reservation.cinema.Cinema;
 import com.movie.reservation.cinema.CinemaRequest;
 import com.movie.reservation.cinema.mapper.CinemaMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,12 +16,9 @@ public class CinemaService {
         this.cinemaMapper = cinemaMapper;
     }
 
+    @Transactional
     public Cinema create(CinemaRequest request) {
-        Cinema cinema = new Cinema();
-        cinema.setName(request.name());
-        cinema.setAddress(request.address());
-        cinema.setSido(request.sido());
-        cinema.setGungu(request.gungu());
+        Cinema cinema = new Cinema(null, request.name(), request.address(), request.sido(), request.gungu(), null, null);
         cinemaMapper.insert(cinema);
         return cinema;
     }
@@ -33,15 +31,14 @@ public class CinemaService {
 
     public List<Cinema> getAll() { return cinemaMapper.findAll(); }
 
+    @Transactional
     public Cinema update(Long id, CinemaRequest request) {
-        Cinema cinema = get(id);
-        cinema.setName(request.name());
-        cinema.setAddress(request.address());
-        cinema.setSido(request.sido());
-        cinema.setGungu(request.gungu());
+        get(id);
+        Cinema cinema = new Cinema(id, request.name(), request.address(), request.sido(), request.gungu(), null, null);
         cinemaMapper.update(cinema);
         return get(id);
     }
 
+    @Transactional
     public void delete(Long id) { cinemaMapper.delete(id); }
 }

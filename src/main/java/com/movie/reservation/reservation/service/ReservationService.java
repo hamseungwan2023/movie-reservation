@@ -5,6 +5,7 @@ import com.movie.reservation.reservation.ReservationRequest;
 import com.movie.reservation.reservation.ReservationStatus;
 import com.movie.reservation.reservation.mapper.ReservationMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,21 +15,19 @@ public class ReservationService {
 
     public ReservationService(ReservationMapper reservationMapper) { this.reservationMapper = reservationMapper; }
 
+    @Transactional
     public Reservation reserve(ReservationRequest request) {
         Reservation existing = reservationMapper.findByScreenTimeAndSeat(request.screenTimeId(), request.seatNumber());
-        if (existing != null && existing.getReservationStatus() == ReservationStatus.CONFIRMED) {
+        if (existing != null && existing.reservationStatus() == ReservationStatus.CONFIRMED) {
             throw new IllegalArgumentException("이미 예약된 좌석입니다.");
         }
 
-        Reservation reservation = new Reservation();
-        reservation.setScreenTimeId(request.screenTimeId());
-        reservation.setSeatNumber(request.seatNumber());
-        reservation.setUsername(request.username());
-        reservation.setReservationStatus(ReservationStatus.CONFIRMED);
+        Reservation reservation = new Reservation(null, ReservationStatus.CONFIRMED, request.screenTimeId(), request.seatNumber(), request.username(), null, null);
         reservationMapper.insert(reservation);
         return reservation;
     }
 
+    @Transactional
     public void cancel(Long id) {
         Reservation reservation = reservationMapper.findById(id);
         if (reservation == null) throw new IllegalArgumentException("예약이 존재하지 않습니다.");

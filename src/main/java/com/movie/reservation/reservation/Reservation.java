@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Reservation {
     private Long id;
-    private ReservationStatus reservationStatus;
-    private Long screenTimeId;
-    private Integer seatNumber;
-    private String username;
+    private ReservationStatus reservationStatus; // 예약 상태(CONFIRMED/CANCELLED)
+    private Long screenTimeId; // 상영 시간 ID
+    private Integer seatNumber; // 예약 좌석 번호
+    private String username; // 예약자 이름
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

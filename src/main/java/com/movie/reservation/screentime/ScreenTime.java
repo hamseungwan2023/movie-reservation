@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ScreenTime {
     private Long id;
-    private String startTime;
-    private String endTime;
-    private Long screenId;
-    private Long movieId;
+    private String startTime; // 상영 시작 시각
+    private String endTime; // 상영 종료 시각
+    private Long screenId; // 상영관 ID
+    private Long movieId; // 영화 ID
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

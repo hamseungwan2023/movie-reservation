@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Seat {
     private Long id;
-    private Long screenId;
-    private String rowName;
-    private Integer seatNumber;
+    private Long screenId; // 상영관 ID
+    private String rowName; // 좌석 열 이름 예) A
+    private Integer seatNumber; // 좌석 번호
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

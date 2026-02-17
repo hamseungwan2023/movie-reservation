@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movie.reservation.seat.mapper.SeatMapper">
+    <insert id="insert" parameterType="com.movie.reservation.seat.Seat" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO seat(screen_id, row_name, seat_number)
+        VALUES (#{screenId}, #{rowName}, #{seatNumber})
+    </insert>
+
+    <select id="findById" resultType="com.movie.reservation.seat.Seat">
+        SELECT * FROM seat WHERE id = #{id}
+    </select>
+
+    <select id="findByScreenId" resultType="com.movie.reservation.seat.Seat">
+        SELECT * FROM seat WHERE screen_id = #{screenId} ORDER BY row_name, seat_number
+    </select>
+
+    <select id="findByScreenAndPosition" resultType="com.movie.reservation.seat.Seat">
+        SELECT * FROM seat
+        WHERE screen_id = #{screenId} AND row_name = #{rowName} AND seat_number = #{seatNumber}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM seat WHERE id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movie.reservation.reservation.mapper.ReservationMapper">
+    <insert id="insert" parameterType="com.movie.reservation.reservation.Reservation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO reservation(reservation_status, screen_time_id, seat_number, username)
+        VALUES (#{reservationStatus}, #{screenTimeId}, #{seatNumber}, #{username})
+    </insert>
+
+    <select id="findById" resultType="com.movie.reservation.reservation.Reservation">
+        SELECT * FROM reservation WHERE id = #{id}
+    </select>
+
+    <select id="findByScreenTimeAndSeat" resultType="com.movie.reservation.reservation.Reservation">
+        SELECT * FROM reservation
+        WHERE screen_time_id = #{screenTimeId}
+          AND seat_number = #{seatNumber}
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <select id="findByUsername" resultType="com.movie.reservation.reservation.Reservation">
+        SELECT * FROM reservation WHERE username = #{username} ORDER BY id DESC
+    </select>
+
+    <update id="updateStatus">
+        UPDATE reservation SET reservation_status = #{reservationStatus} WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM reservation WHERE id = #{id}
+    </delete>
+</mapper>

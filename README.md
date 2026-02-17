@@ -1,52 +1,34 @@
-﻿# movie-reservation
-### API명세서
-https://www.notion.so/API-fffb95dab55c806c863bd07fe6ea9812
+# movie-reservation (MyBatis)
 
-### ERD Diagram
-![image](https://github.com/user-attachments/assets/aeab33d9-d945-40e3-b736-3276451f2477)
+영화관/상영관/좌석/영화/상영시간/예매 도메인을 MyBatis 기반으로 재구성한 백엔드입니다.
 
-### 요구 사항 정의
-- 요구 사항
-    
-    안녕하세요 저희 씨네마는 전국 곳곳에 있습니다.
-    
-    지금은 시범적으로 서울시 강남구에 있는 영화관을 하나 앱으로 만들어서 시범운영을 해보려고 하고있습니다.
-    
-    유저들은 필수적으로 로그인을 해서 좌석예약을 진행해야 하고, 
-    
-    실시간으로 좌석이 예약이 되었으면 좌석의 불빛은 꺼졌으면 좋겠습니다.
-    
-    강남에 있는 영화관은 상영관이 총 5개고,
-    
-    1. a상영관에는 좌석이 80개 있습니다.
-    2. b상영관에는 좌석이 50개 있습니다.
-    3. c상영관에는 좌석이 65개 있습니다.
-    4. d상영관에는 좌석이 100개 있습니다.
-    5. e 상영관에는 좌석이 150개 있습니다.
-    
-    각 상영관들은 3시간에 한번씩 상영해서 하루에 총 5번씩 상영을 합니다.
-    
-    만약에 이번 앱이 성공적으로 운영이 잘 된다면 확장성 있게 프로젝트를 만들어주셨으면 좋겠습니다.
-    
-    2주 안에 만들어주셨으면 좋겠습니다.
-    
-- 요구 사항 정의
-    
-    ### 기능적 요구사항
-    
-    1. 좌석 예약 ex) 예약상태관리, 해당유저의 예약 영화 관리
-    2. 로그인 / 회원가입 / 비밀번호 변경 / 탈퇴
-    3. 영화정보 제공 ex) 영화 목록, 상영 날짜 및 시간, 포스터
-    
-    ### 소프트웨어 요구사항
-    
-    1. 백 엔드 : JAVA/Spring, Spring Scurity, JWT, JPA, QueryDsl
-    2. 데이터베이스 : MYSQL
-    3. 프론트 엔드 : React
-    4. API 통신 : RESTful API
-    5. CI/CD : Jenkins
-    
-    ### 하드웨어 요구사항
-    
-    1. 서버 : AWS EC2
-    2. 스토리지 : AWS S3
+## 변경 사항
+- JPA/Spring Security/JWT/AWS S3 제거
+- MyBatis Mapper + XML 기반 CRUD로 전환
+- 유저 테이블 제거, 예매는 `username` 문자열 기준으로 처리
+- DDL은 `src/main/resources/schema.sql` 기준
+
+## 도메인
+- cinema
+- movie
+- screen
+- screen_time
+- seat
+- reservation
+
+## 실행
+```bash
+./gradlew bootRun
+```
+
+## DDL 적용
+```bash
+mysql -u root -p movie < src/main/resources/schema.sql
+```
+
+
+## 스키마 파일 다운로드 API
+```bash
+curl -L -o movie-reservation-schema.sql http://localhost:8080/api/download/schema
+```
+

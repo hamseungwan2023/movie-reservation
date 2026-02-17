@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.movie.reservation.screen.mapper.ScreenMapper">
+
     <insert id="insert" parameterType="com.movie.reservation.screen.Screen" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO screen(name, total_seat, cinema_id)
         VALUES (#{name}, #{totalSeat}, #{cinemaId})
@@ -25,4 +26,5 @@
     <delete id="delete">
         DELETE FROM screen WHERE id=#{id}
     </delete>
+
 </mapper>

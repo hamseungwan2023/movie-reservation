@@ -2,7 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.movie.reservation.screentime.mapper.ScreenTimeMapper">
+
     <insert id="insert" parameterType="com.movie.reservation.screentime.ScreenTime" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO screen_time(start_time, end_time, screen_id, movie_id)
         VALUES (#{startTime}, #{endTime}, #{screenId}, #{movieId})
@@ -29,4 +31,5 @@
     <delete id="delete">
         DELETE FROM screen_time WHERE id=#{id}
     </delete>
+
 </mapper>

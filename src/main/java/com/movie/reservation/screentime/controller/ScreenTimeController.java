@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/screen-times")
+@RequestMapping("/api/screenTimes")
 public class ScreenTimeController {
     private final ScreenTimeService screenTimeService;
 
@@ -24,12 +24,12 @@ public class ScreenTimeController {
     @GetMapping("/{id}")
     public ApiResponse<ScreenTime> get(@PathVariable Long id) { return ApiResponse.ok("조회 성공", screenTimeService.get(id)); }
 
-    @GetMapping("/by-movie")
+    @GetMapping("/byMovie")
     public ApiResponse<List<ScreenTime>> getByMovie(@RequestParam Long movieId) {
         return ApiResponse.ok("조회 성공", screenTimeService.getByMovie(movieId));
     }
 
-    @GetMapping("/by-screen")
+    @GetMapping("/byScreen")
     public ApiResponse<List<ScreenTime>> getByScreen(@RequestParam Long screenId) {
         return ApiResponse.ok("조회 성공", screenTimeService.getByScreen(screenId));
     }
